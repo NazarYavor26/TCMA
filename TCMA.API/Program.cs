@@ -1,8 +1,15 @@
+using TCMA.BLL;
+using TCMA.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services
+    .AddBLL(builder.Configuration)
+    .AddDAL(builder.Configuration);
 
 var app = builder.Build();
 
