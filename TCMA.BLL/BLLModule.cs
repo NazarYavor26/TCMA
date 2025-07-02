@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TCMA.BLL.Services;
 
 namespace TCMA.BLL
 {
@@ -7,6 +8,7 @@ namespace TCMA.BLL
     {
         public static IServiceCollection AddBLL(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IComponentService, ComponentService>();
             return services;
         }
     }

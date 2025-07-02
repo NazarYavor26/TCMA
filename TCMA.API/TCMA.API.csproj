@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TCMA.BLL\TCMA.BLL.csproj" />
     <ProjectReference Include="..\TCMA.DAL\TCMA.DAL.csproj" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace TCMA.DAL.Repositories
 {
-    internal interface IComponentRepository
+    public interface IComponentRepository
     {
         Task<IEnumerable<Component>> GetAllAsync(string? searchComponent);
     }

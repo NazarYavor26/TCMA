@@ -1,6 +1,6 @@
-﻿namespace TCMA.DAL.Entities
+﻿namespace TCMA.BLL.Models
 {
-    public class Component
+    public class ComponentModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

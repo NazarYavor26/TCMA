@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TCMA.DAL.DbContexts;
 using TCMA.DAL.Entities;
 
 namespace TCMA.DAL.Repositories
 {
-    internal class ComponentRepository : IComponentRepository
+    public class ComponentRepository : IComponentRepository
     {
         private readonly AppDbContext _db;
 

@@ -3,7 +3,7 @@ using TCMA.DAL.Entities;
 
 namespace TCMA.DAL.DbContexts
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         public DbSet<Component> Components { get; set; }
 

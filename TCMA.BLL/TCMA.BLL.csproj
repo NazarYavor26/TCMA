@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TCMA.DAL\TCMA.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
