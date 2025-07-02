@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TCMA.BLL.Models;
 using TCMA.BLL.Services;
 
 namespace TCMA.API.Controllers
@@ -26,6 +27,33 @@ namespace TCMA.API.Controllers
         {
             var component = await _componentService.GetByIdAsync(id);
             return Ok(component);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] ComponentSaveModel createComponentModel)
+        {
+            var createdComponent = await _componentService.CreateAsync(createComponentModel);
+            return Ok(createdComponent);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ComponentSaveModel updateComponentModel)
+        {
+            var updatedComponent = await _componentService.UpdateAsync(id, updateComponentModel);
+            return Ok(updatedComponent);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var isDeleted = await _componentService.DeleteAsync(id);
+
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

@@ -5,11 +5,11 @@ namespace TCMA.BLL.Utilities
 {
     public static class Mapper
     {
-        public static ComponentModel ToModel(this Component entitiy)
+        public static ComponentGetModel ToModel(this Component entitiy)
         {
             if (entitiy == null) return null;
 
-            return new ComponentModel
+            return new ComponentGetModel
             {
                 Id = entitiy.Id,
                 Name = entitiy.Name,
@@ -19,13 +19,26 @@ namespace TCMA.BLL.Utilities
             };
         }
 
-        public static Component ToEntity(this ComponentModel model)
+        public static Component ToEntity(this ComponentGetModel model)
         {
             if (model == null) return null;
 
             return new Component
             {
                 Id = model.Id,
+                Name = model.Name,
+                UniqueNumber = model.UniqueNumber,
+                CanAssignQuantity = model.CanAssignQuantity,
+                Quantity = model.Quantity,
+            };
+        }
+
+        public static Component ToEntity(this ComponentSaveModel model)
+        {
+            if (model == null) return null;
+
+            return new Component
+            {
                 Name = model.Name,
                 UniqueNumber = model.UniqueNumber,
                 CanAssignQuantity = model.CanAssignQuantity,
