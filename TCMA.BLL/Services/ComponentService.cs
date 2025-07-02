@@ -18,5 +18,11 @@ namespace TCMA.BLL.Services
             var components = await _componentRepository.GetAllAsync(searchComponent);
             return components.Select(c => c.ToModel());
         }
+
+        public async Task<ComponentModel> GetByIdAsync(int id)
+        {
+            var component = await _componentRepository.GetByIdAsync(id);
+            return component.ToModel();
+        }
     }
 }

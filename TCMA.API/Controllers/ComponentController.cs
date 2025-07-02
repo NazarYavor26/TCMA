@@ -20,5 +20,12 @@ namespace TCMA.API.Controllers
             var components = await _componentService.GetAllAsync(searchComponent);
             return Ok(components);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var component = await _componentService.GetByIdAsync(id);
+            return Ok(component);
+        }
     }
 }

@@ -26,5 +26,12 @@ namespace TCMA.DAL.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<Component?> GetByIdAsync(int id)
+        {
+            return await _db.Components
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+        }
     }
 }
