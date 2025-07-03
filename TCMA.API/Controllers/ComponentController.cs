@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using TCMA.BLL.Models;
 using TCMA.BLL.Services;
 
@@ -16,6 +17,8 @@ namespace TCMA.API.Controllers
         }
 
         [HttpGet]
+        [EnableRateLimiting("readOperations")]
+        [ResponseCache(CacheProfileName = "Cache5Mins")]
         public async Task<IActionResult> Get(string? searchComponent = null)
         {
             var components = await _componentService.GetAllAsync(searchComponent);
@@ -23,6 +26,8 @@ namespace TCMA.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [EnableRateLimiting("readOperations")]
+        [ResponseCache(CacheProfileName = "Cache5Mins")]
         public async Task<IActionResult> Get(int id)
         {
             var component = await _componentService.GetByIdAsync(id);
@@ -30,6 +35,7 @@ namespace TCMA.API.Controllers
         }
 
         [HttpPost]
+        [EnableRateLimiting("writeOperations")]
         public async Task<IActionResult> Create([FromBody] ComponentSaveModel createComponentModel)
         {
             var createdComponent = await _componentService.CreateAsync(createComponentModel);
@@ -37,6 +43,7 @@ namespace TCMA.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [EnableRateLimiting("writeOperations")]
         public async Task<IActionResult> Update(int id, [FromBody] ComponentSaveModel updateComponentModel)
         {
             var updatedComponent = await _componentService.UpdateAsync(id, updateComponentModel);
@@ -44,6 +51,7 @@ namespace TCMA.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [EnableRateLimiting("writeOperations")]
         public async Task<IActionResult> Delete(int id)
         {
             var isDeleted = await _componentService.DeleteAsync(id);
