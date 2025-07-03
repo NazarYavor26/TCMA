@@ -15,7 +15,7 @@ namespace TCMA.DAL.Repositories
 
         public async Task<IEnumerable<Component>> GetAllAsync(string? searchComponent)
         {
-            IQueryable<Component> query = _db.Components;
+            IQueryable<Component> query = _db.Components.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(searchComponent))
             {
@@ -30,8 +30,8 @@ namespace TCMA.DAL.Repositories
         public async Task<Component?> GetByIdAsync(int id)
         {
             return await _db.Components
-                .Where(c => c.Id == id)
-                .FirstOrDefaultAsync();
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Component> CreateAsync(Component component)
