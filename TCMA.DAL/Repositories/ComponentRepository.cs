@@ -13,18 +13,9 @@ namespace TCMA.DAL.Repositories
             _db = db;
         }
 
-        public async Task<IEnumerable<Component>> GetAllAsync(string? searchComponent)
+        public IQueryable<Component> GetQueryable()
         {
-            IQueryable<Component> query = _db.Components.AsNoTracking();
-
-            if (!string.IsNullOrWhiteSpace(searchComponent))
-            {
-                query = query.Where(c =>
-                c.Name.Contains(searchComponent) ||
-                c.UniqueNumber.Contains(searchComponent));
-            }
-
-            return await query.ToListAsync();
+            return _db.Components.AsNoTracking();
         }
 
         public async Task<Component?> GetByIdAsync(int id)

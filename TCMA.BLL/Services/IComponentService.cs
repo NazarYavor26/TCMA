@@ -4,7 +4,7 @@ namespace TCMA.BLL.Services
 {
     public interface IComponentService
     {
-        Task<IEnumerable<ComponentGetModel>> GetAllAsync(string? searchComponent);
+        Task<PagedResult<ComponentGetModel>> GetAllAsync(ComponentFilterModel filter);
 
         Task<ComponentGetModel> GetByIdAsync(int id);
 

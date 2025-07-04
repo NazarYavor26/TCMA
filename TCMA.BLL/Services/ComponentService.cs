@@ -1,5 +1,8 @@
-﻿using TCMA.BLL.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TCMA.BLL.Enums;
+using TCMA.BLL.Models;
 using TCMA.BLL.Utilities;
+using TCMA.DAL.Entities;
 using TCMA.DAL.Repositories;
 
 namespace TCMA.BLL.Services
@@ -13,10 +16,33 @@ namespace TCMA.BLL.Services
             _componentRepository = componentRepository;
         }
 
-        public async Task<IEnumerable<ComponentGetModel>> GetAllAsync(string? searchComponent)
+        public async Task<PagedResult<ComponentGetModel>> GetAllAsync(ComponentFilterModel filter)
         {
-            var components = await _componentRepository.GetAllAsync(searchComponent);
-            return components.Select(c => c.ToModel());
+            var query = _componentRepository.GetQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter.Search))
+            {
+                query = query.Where(c =>
+                c.Name.Contains(filter.Search) ||
+                c.UniqueNumber.Contains(filter.Search));
+            }
+
+            query = SortComponentQuery(query, filter);
+            int componentsCount = await query.CountAsync();
+
+            var components = await query
+                .Skip((filter.Page - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .Select(c => c.ToModel())
+                .ToListAsync();
+
+            return new PagedResult<ComponentGetModel>
+            {
+                Items = components,
+                Count = componentsCount,
+                Page = filter.Page,
+                PageSize = filter.PageSize
+            };
         }
 
         public async Task<ComponentGetModel> GetByIdAsync(int id)
@@ -70,6 +96,24 @@ namespace TCMA.BLL.Services
         public async Task<bool> DeleteAsync(int id)
         {
             return await _componentRepository.DeleteAsync(id);
+        }
+
+        private IQueryable<Component> SortComponentQuery(IQueryable<Component> query, ComponentFilterModel filter)
+        {
+            return filter.SortBy switch
+            {
+                ComponentSortField.Name => filter.IsDescending
+                ? query.OrderByDescending(c => c.Name)
+                : query.OrderBy(c => c.Name),
+
+                ComponentSortField.UniqueNumber => filter.IsDescending
+                ? query.OrderByDescending(c => c.UniqueNumber)
+                : query.OrderBy(c => c.UniqueNumber),
+
+                _ => filter.IsDescending
+                ? query.OrderByDescending(c => c.Id)
+                : query.OrderBy(c => c.Id)
+            };
         }
     }
 }

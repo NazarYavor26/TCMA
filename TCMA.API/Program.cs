@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using TCMA.API.Infrastructure.Cache;
 using TCMA.API.Infrastructure.Extensions;
 using TCMA.API.Infrastructure.Middleware;
@@ -7,10 +8,15 @@ using TCMA.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options =>
-{
-    CacheConfig.ConfigureCacheProfiles(options, builder.Configuration);
-});
+builder.Services
+    .AddControllers(options =>
+    {
+        CacheConfig.ConfigureCacheProfiles(options, builder.Configuration);
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.AddCorsPolicies();
 builder.Services.AddEndpointsApiExplorer();
