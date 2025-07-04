@@ -10,8 +10,13 @@ namespace TCMA.DAL
     {
         public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
         {
+            var commandTimeout = configuration.GetValue<int?>("DatabaseSettings:CommandTimeoutSeconds") ?? 30;
+
             services.AddDbContext<AppDbContext>(option =>
-                option.UseSqlServer(configuration.GetConnectionString("DBConnection")), ServiceLifetime.Singleton);
+                option.UseSqlServer(
+                    configuration.GetConnectionString("DBConnection"),
+                    sqlOptions => sqlOptions.CommandTimeout(commandTimeout)), 
+                    ServiceLifetime.Singleton);
 
             services.AddTransient<IComponentRepository, ComponentRepository>();
 
