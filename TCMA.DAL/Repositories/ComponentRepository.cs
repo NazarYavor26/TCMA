@@ -34,6 +34,13 @@ namespace TCMA.DAL.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<Component?> GetByUniqueNumberAsync(string uniqueNumber)
+        {
+            return await _db.Components
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.UniqueNumber == uniqueNumber);
+        }
+
         public async Task<Component> CreateAsync(Component component)
         {
             await _db.Components.AddAsync(component);
@@ -44,8 +51,7 @@ namespace TCMA.DAL.Repositories
         public async Task<Component> UpdateAsync(int componentId, Component component)
         {
             var existingСomponent = await _db.Components
-                .Where(c => c.Id == componentId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == componentId);
 
             if (existingСomponent == null)
             {
@@ -64,8 +70,7 @@ namespace TCMA.DAL.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var existingСomponent = await _db.Components
-                .Where(c => c.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (existingСomponent == null)
             {
