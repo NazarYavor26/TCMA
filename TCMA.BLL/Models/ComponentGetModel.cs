@@ -10,6 +10,6 @@
 
         public bool CanAssignQuantity { get; set; }
 
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
     }
 }

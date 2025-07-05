@@ -2,17 +2,18 @@
 
 namespace TCMA.BLL.Models
 {
-    public class ComponentSaveModel
+    public class ComponentCreateModel
     {
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
         [Required]
+        [StringLength(100)]
         public string UniqueNumber { get; set; }
 
         public bool CanAssignQuantity { get; set; }
 
-        [Range(0, int.MaxValue)]
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
     }
 }

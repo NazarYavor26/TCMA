@@ -19,7 +19,7 @@ namespace TCMA.API.Controllers
         [HttpGet]
         [EnableRateLimiting("readOperations")]
         [ResponseCache(CacheProfileName = "Cache5Mins")]
-        public async Task<IActionResult> Get([FromQuery]ComponentFilterModel filter)
+        public async Task<IActionResult> Get([FromQuery] ComponentFilterModel filter)
         {
             var components = await _componentService.GetAllAsync(filter);
             return Ok(components);
@@ -36,17 +36,25 @@ namespace TCMA.API.Controllers
 
         [HttpPost]
         [EnableRateLimiting("writeOperations")]
-        public async Task<IActionResult> Create([FromBody] ComponentSaveModel createComponentModel)
+        public async Task<IActionResult> Create([FromBody] ComponentCreateModel componentCreate)
         {
-            var createdComponent = await _componentService.CreateAsync(createComponentModel);
+            var createdComponent = await _componentService.CreateAsync(componentCreate);
             return Ok(createdComponent);
         }
 
         [HttpPut("{id}")]
         [EnableRateLimiting("writeOperations")]
-        public async Task<IActionResult> Update(int id, [FromBody] ComponentSaveModel updateComponentModel)
+        public async Task<IActionResult> Update(int id, [FromBody] ComponentUpdateModel componentUpdate)
         {
-            var updatedComponent = await _componentService.UpdateAsync(id, updateComponentModel);
+            var updatedComponent = await _componentService.UpdateAsync(id, componentUpdate);
+            return Ok(updatedComponent);
+        }
+
+        [HttpPut("{id}/quantity")]
+        [EnableRateLimiting("writeOperations")]
+        public async Task<IActionResult> UpdateQuantity(int id, [FromQuery] QuantityUpdateModel quantityUpdate)
+        {
+            var updatedComponent = await _componentService.UpdateQuantityAsync(id, quantityUpdate);
             return Ok(updatedComponent);
         }
 

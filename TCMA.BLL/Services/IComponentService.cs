@@ -8,9 +8,11 @@ namespace TCMA.BLL.Services
 
         Task<ComponentGetModel> GetByIdAsync(int id);
 
-        Task<ComponentGetModel> CreateAsync(ComponentSaveModel component);
+        Task<ComponentGetModel> CreateAsync(ComponentCreateModel componentCreate);
 
-        Task<ComponentGetModel> UpdateAsync(int componentId, ComponentSaveModel component);
+        Task<ComponentGetModel> UpdateAsync(int componentId, ComponentUpdateModel componentUpdate);
+
+        Task<ComponentGetModel> UpdateQuantityAsync(int componentId, QuantityUpdateModel quantityUpdate);
 
         Task<bool> DeleteAsync(int id);
     }

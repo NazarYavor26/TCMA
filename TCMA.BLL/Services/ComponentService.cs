@@ -57,20 +57,22 @@ namespace TCMA.BLL.Services
             return component.ToModel();
         }
 
-        public async Task<ComponentGetModel> CreateAsync(ComponentSaveModel component)
+        public async Task<ComponentGetModel> CreateAsync(ComponentCreateModel componentCreate)
         {
-            var existingСomponent = await _componentRepository.GetByUniqueNumberAsync(component.UniqueNumber);
+            var existingСomponent = await _componentRepository.GetByUniqueNumberAsync(componentCreate.UniqueNumber);
 
             if (existingСomponent != null)
             {
-                throw new InvalidOperationException($"Component with UniqueNumber {component.UniqueNumber} already exists.");
+                throw new InvalidOperationException($"Component with UniqueNumber {componentCreate.UniqueNumber} already exists.");
             }
 
-            var createdComponent = await _componentRepository.CreateAsync(component.ToEntity());
+            ValidateQuantityAssignment(componentCreate.CanAssignQuantity, componentCreate.Quantity);
+
+            var createdComponent = await _componentRepository.CreateAsync(componentCreate.ToEntity());
             return createdComponent.ToModel();
         }
 
-        public async Task<ComponentGetModel> UpdateAsync(int componentId, ComponentSaveModel component)
+        public async Task<ComponentGetModel> UpdateAsync(int componentId, ComponentUpdateModel componentUpdate)
         {
             var existingСomponent = await _componentRepository.GetByIdAsync(componentId);
 
@@ -79,17 +81,44 @@ namespace TCMA.BLL.Services
                 throw new KeyNotFoundException($"Component with id {componentId} not found.");
             }
 
-            if (existingСomponent.UniqueNumber != component.UniqueNumber)
+            if (existingСomponent.UniqueNumber != componentUpdate.UniqueNumber)
             {
-                var duplicate = await _componentRepository.GetByUniqueNumberAsync(component.UniqueNumber);
+                var duplicate = await _componentRepository.GetByUniqueNumberAsync(componentUpdate.UniqueNumber);
 
                 if (duplicate != null)
                 {
-                    throw new InvalidOperationException($"Component with UniqueNumber {component.UniqueNumber} already exists.");
+                    throw new InvalidOperationException($"Component with UniqueNumber {componentUpdate.UniqueNumber} already exists.");
                 }
             }
 
-            var updatedComponent = await _componentRepository.UpdateAsync(componentId, component.ToEntity());
+            var entityComponent = componentUpdate.ToEntity();
+
+            if (!componentUpdate.CanAssignQuantity)
+            {
+                entityComponent.Quantity = null;
+            }
+
+            var updatedComponent = await _componentRepository.UpdateAsync(componentId, entityComponent);
+            return updatedComponent.ToModel();
+        }
+
+        public async Task<ComponentGetModel> UpdateQuantityAsync(int componentId, QuantityUpdateModel quantityUpdate)
+        {
+            var existingСomponent = await _componentRepository.GetByIdAsync(componentId);
+
+            if (existingСomponent == null)
+            {
+                throw new KeyNotFoundException($"Component with id {componentId} not found.");
+            }
+
+            if (!existingСomponent.CanAssignQuantity)
+            {
+                throw new InvalidOperationException($"Cannot assign quantity to this component.");
+            }
+
+            existingСomponent.Quantity = quantityUpdate.Quantity;
+            var updatedComponent = await _componentRepository.UpdateAsync(componentId, existingСomponent);
+
             return updatedComponent.ToModel();
         }
 
@@ -114,6 +143,22 @@ namespace TCMA.BLL.Services
                 ? query.OrderByDescending(c => c.Id)
                 : query.OrderBy(c => c.Id)
             };
+        }
+
+        private void ValidateQuantityAssignment(bool canAssignQuantity, int? quantity)
+        {
+            if (!canAssignQuantity && quantity != null)
+            {
+                throw new InvalidOperationException("Quantity must be null when CanAssignQuantity is false.");
+            }
+
+            if (canAssignQuantity && quantity != null)
+            {
+                if (int.IsNegative(quantity.Value))
+                {
+                    throw new InvalidOperationException("Quantity must be a positive integer.");
+                }
+            }
         }
     }
 }

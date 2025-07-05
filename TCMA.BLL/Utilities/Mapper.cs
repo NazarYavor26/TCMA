@@ -33,7 +33,7 @@ namespace TCMA.BLL.Utilities
             };
         }
 
-        public static Component ToEntity(this ComponentSaveModel model)
+        public static Component ToEntity(this ComponentCreateModel model)
         {
             if (model == null) return null;
 
@@ -43,6 +43,18 @@ namespace TCMA.BLL.Utilities
                 UniqueNumber = model.UniqueNumber,
                 CanAssignQuantity = model.CanAssignQuantity,
                 Quantity = model.Quantity,
+            };
+        }
+
+        public static Component ToEntity(this ComponentUpdateModel model)
+        {
+            if (model == null) return null;
+
+            return new Component
+            {
+                Name = model.Name,
+                UniqueNumber = model.UniqueNumber,
+                CanAssignQuantity = model.CanAssignQuantity,
             };
         }
     }

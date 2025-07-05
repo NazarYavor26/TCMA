@@ -8,8 +8,7 @@ namespace TCMA.DAL.DbContexts
         public DbSet<Component> Components { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
-           : base(options)
-        { }
+           : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +20,12 @@ namespace TCMA.DAL.DbContexts
             modelBuilder.Entity<Component>()
                 .HasIndex(c => c.UniqueNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<Component>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CK_Component_Quantity_Valid",
+                    "([CanAssignQuantity] = 1 AND ([Quantity] IS NULL OR [Quantity] >= 0)) OR ([CanAssignQuantity] = 0 AND [Quantity] IS NULL)"
+                ));
         }
     }
 }
