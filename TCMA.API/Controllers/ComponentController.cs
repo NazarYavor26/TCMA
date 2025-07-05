@@ -18,7 +18,6 @@ namespace TCMA.API.Controllers
 
         [HttpGet]
         [EnableRateLimiting("readOperations")]
-        [ResponseCache(CacheProfileName = "Cache5Mins")]
         public async Task<IActionResult> Get([FromQuery] ComponentFilterModel filter)
         {
             var components = await _componentService.GetAllAsync(filter);
@@ -27,7 +26,6 @@ namespace TCMA.API.Controllers
 
         [HttpGet("{id}")]
         [EnableRateLimiting("readOperations")]
-        [ResponseCache(CacheProfileName = "Cache5Mins")]
         public async Task<IActionResult> Get(int id)
         {
             var component = await _componentService.GetByIdAsync(id);

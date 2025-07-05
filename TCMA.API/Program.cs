@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using TCMA.API.Infrastructure.Cache;
 using TCMA.API.Infrastructure.Extensions;
 using TCMA.API.Infrastructure.Middleware;
 using TCMA.API.Infrastructure.RateLimit;
@@ -9,10 +8,7 @@ using TCMA.DAL;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddControllers(options =>
-    {
-        CacheConfig.ConfigureCacheProfiles(options, builder.Configuration);
-    })
+    .AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -50,7 +46,5 @@ app.UseAuthorization();
 app.UseResponseCompression();
 
 app.MapControllers();
-
-app.UseResponseCaching();
 
 app.Run();
