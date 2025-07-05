@@ -15,7 +15,7 @@ namespace TCMA.DAL
             services.AddDbContext<AppDbContext>(option =>
                 option.UseSqlServer(
                     configuration.GetConnectionString("DBConnection"),
-                    sqlOptions => sqlOptions.CommandTimeout(commandTimeout)), 
+                    sqlOptions => sqlOptions.CommandTimeout(commandTimeout)),
                     ServiceLifetime.Singleton);
 
             services.AddTransient<IComponentRepository, ComponentRepository>();

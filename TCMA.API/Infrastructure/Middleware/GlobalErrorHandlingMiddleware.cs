@@ -43,7 +43,7 @@ namespace TCMA.API.Infrastructure.Middleware
                     errorDetails.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     errorDetails.Message = exception.Message;
-                    break;                
+                    break;
 
                 default:
                     errorDetails.StatusCode = (int)HttpStatusCode.InternalServerError;
