@@ -4,13 +4,15 @@ namespace TCMA.BLL.Services
 {
     public interface IComponentService
     {
-        Task<IEnumerable<ComponentGetModel>> GetAllAsync(string? searchComponent);
+        Task<PagedResult<ComponentGetModel>> GetAllAsync(ComponentFilterModel filter);
 
         Task<ComponentGetModel> GetByIdAsync(int id);
 
-        Task<ComponentGetModel> CreateAsync(ComponentSaveModel component);
+        Task<ComponentGetModel> CreateAsync(ComponentCreateModel componentCreate);
 
-        Task<ComponentGetModel> UpdateAsync(int componentId, ComponentSaveModel component);
+        Task<ComponentGetModel> UpdateAsync(int componentId, ComponentUpdateModel componentUpdate);
+
+        Task<ComponentGetModel> UpdateQuantityAsync(int componentId, QuantityUpdateModel quantityUpdate);
 
         Task<bool> DeleteAsync(int id);
     }

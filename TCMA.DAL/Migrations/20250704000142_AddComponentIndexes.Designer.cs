@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TCMA.DAL.DbContexts;
 
@@ -10,9 +11,11 @@ using TCMA.DAL.DbContexts;
 namespace TCMA.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250704000142_AddComponentIndexes")]
+    partial class AddComponentIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,16 +37,14 @@ namespace TCMA.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("Quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<string>("UniqueNumber")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -52,10 +53,7 @@ namespace TCMA.DAL.Migrations
                     b.HasIndex("UniqueNumber")
                         .IsUnique();
 
-                    b.ToTable("Components", t =>
-                        {
-                            t.HasCheckConstraint("CK_Component_Quantity_Valid", "([CanAssignQuantity] = 1 AND ([Quantity] IS NULL OR [Quantity] >= 0)) OR ([CanAssignQuantity] = 0 AND [Quantity] IS NULL)");
-                        });
+                    b.ToTable("Components");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,12 +1,12 @@
 ﻿namespace TCMA.API.Infrastructure.Extensions
 {
-    public static class CorsConfig
+    public static class CorsExtension
     {
         private const string TCMA_POLICY = "TCMAPolicy";
 
         public static string PolicyName => TCMA_POLICY;
 
-        public static void AddCorsPolicies(this IServiceCollection services)
+        public static IServiceCollection AddCorsPolicies(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
@@ -18,6 +18,8 @@
                     .WithExposedHeaders("Token-Expired");
                 });
             });
+
+            return services;
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TCMA.DAL.Entities
+namespace TCMA.BLL.Models
 {
-    public class Component
+    public class ComponentCreateModel
     {
-        public int Id { get; set; }
-
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
@@ -16,7 +14,7 @@ namespace TCMA.DAL.Entities
 
         public bool CanAssignQuantity { get; set; }
 
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a positive integer.")]
         public int? Quantity { get; set; }
     }
 }

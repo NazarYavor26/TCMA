@@ -5,7 +5,7 @@ namespace TCMA.API.Infrastructure.RateLimit
 {
     public static class RateLimiterConfig
     {
-        public static void AddConfiguredRateLimiter(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddConfiguredRateLimiter(this IServiceCollection services, IConfiguration configuration)
         {
             var rateLimitingOptions = configuration.GetSection("RateLimiting").Get<RateLimiterOptions>();
 
@@ -30,6 +30,8 @@ namespace TCMA.API.Infrastructure.RateLimit
                     limiteroptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 });
             });
+
+            return services;
         }
 
         public static IApplicationBuilder UseConfiguredRateLimiter(this IApplicationBuilder app)

@@ -13,25 +13,23 @@ namespace TCMA.DAL.Repositories
             _db = db;
         }
 
-        public async Task<IEnumerable<Component>> GetAllAsync(string? searchComponent)
+        public IQueryable<Component> GetQueryable()
         {
-            IQueryable<Component> query = _db.Components;
-
-            if (!string.IsNullOrWhiteSpace(searchComponent))
-            {
-                query = query.Where(c =>
-                c.Name.Contains(searchComponent) ||
-                c.UniqueNumber.Contains(searchComponent));
-            }
-
-            return await query.ToListAsync();
+            return _db.Components.AsNoTracking();
         }
 
         public async Task<Component?> GetByIdAsync(int id)
         {
             return await _db.Components
-                .Where(c => c.Id == id)
-                .FirstOrDefaultAsync();
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Component?> GetByUniqueNumberAsync(string uniqueNumber)
+        {
+            return await _db.Components
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.UniqueNumber == uniqueNumber);
         }
 
         public async Task<Component> CreateAsync(Component component)
@@ -44,8 +42,7 @@ namespace TCMA.DAL.Repositories
         public async Task<Component> UpdateAsync(int componentId, Component component)
         {
             var existingСomponent = await _db.Components
-                .Where(c => c.Id == componentId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == componentId);
 
             if (existingСomponent == null)
             {
@@ -64,8 +61,7 @@ namespace TCMA.DAL.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var existingСomponent = await _db.Components
-                .Where(c => c.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (existingСomponent == null)
             {

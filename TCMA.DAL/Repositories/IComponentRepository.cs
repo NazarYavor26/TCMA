@@ -4,9 +4,11 @@ namespace TCMA.DAL.Repositories
 {
     public interface IComponentRepository
     {
-        Task<IEnumerable<Component>> GetAllAsync(string? searchComponent);
+        IQueryable<Component> GetQueryable();
 
         Task<Component?> GetByIdAsync(int id);
+
+        Task<Component?> GetByUniqueNumberAsync(string uniqueNumber);
 
         Task<Component> CreateAsync(Component component);
 
