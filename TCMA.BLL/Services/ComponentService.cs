@@ -59,9 +59,9 @@ namespace TCMA.BLL.Services
 
         public async Task<ComponentGetModel> CreateAsync(ComponentCreateModel componentCreate)
         {
-            var existingСomponent = await _componentRepository.GetByUniqueNumberAsync(componentCreate.UniqueNumber);
+            var existingComponent = await _componentRepository.GetByUniqueNumberAsync(componentCreate.UniqueNumber);
 
-            if (existingСomponent != null)
+            if (existingComponent != null)
             {
                 throw new InvalidOperationException($"Component with UniqueNumber {componentCreate.UniqueNumber} already exists.");
             }
@@ -115,6 +115,8 @@ namespace TCMA.BLL.Services
             {
                 throw new InvalidOperationException($"Cannot assign quantity to this component.");
             }
+
+            ValidateQuantityAssignment(true, quantityUpdate.Quantity);
 
             existingComponent.Quantity = quantityUpdate.Quantity;
             var updatedComponent = await _componentRepository.UpdateAsync(componentId, existingComponent);

@@ -14,6 +14,7 @@ namespace TCMA.BLL.Models
 
         public bool CanAssignQuantity { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a positive integer.")]
         public int? Quantity { get; set; }
     }
 }
