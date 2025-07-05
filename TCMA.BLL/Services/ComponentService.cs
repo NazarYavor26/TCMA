@@ -104,20 +104,20 @@ namespace TCMA.BLL.Services
 
         public async Task<ComponentGetModel> UpdateQuantityAsync(int componentId, QuantityUpdateModel quantityUpdate)
         {
-            var existingСomponent = await _componentRepository.GetByIdAsync(componentId);
+            var existingComponent = await _componentRepository.GetByIdAsync(componentId);
 
-            if (existingСomponent == null)
+            if (existingComponent == null)
             {
                 throw new KeyNotFoundException($"Component with id {componentId} not found.");
             }
 
-            if (!existingСomponent.CanAssignQuantity)
+            if (!existingComponent.CanAssignQuantity)
             {
                 throw new InvalidOperationException($"Cannot assign quantity to this component.");
             }
 
-            existingСomponent.Quantity = quantityUpdate.Quantity;
-            var updatedComponent = await _componentRepository.UpdateAsync(componentId, existingСomponent);
+            existingComponent.Quantity = quantityUpdate.Quantity;
+            var updatedComponent = await _componentRepository.UpdateAsync(componentId, existingComponent);
 
             return updatedComponent.ToModel();
         }
